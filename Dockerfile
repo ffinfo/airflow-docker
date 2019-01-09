@@ -6,7 +6,10 @@ ENV SLUGIFY_USES_TEXT_UNIDECODE=yes
 RUN apt update && apt install libsasl2-dev
 RUN cd /opt/incubator-airflow && pip install .[all]
 RUN useradd -ms /bin/bash airflow
+
+USER airflow
+WORKDIR /home/airflow
 ENV AIRFLOW_HOME=/home/airflow/airflow
 RUN mkdir $AIRFLOW_HOME
-WORKDIR /home/airflow
-USER airflow
+ADD entrypoint.sh /entrypoint.sh
+CMD ["/entrypoint.sh"]
